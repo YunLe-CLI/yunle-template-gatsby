@@ -47,7 +47,7 @@ gulp.task('build-less', function(){
 // 压缩图片任务
 gulp.task('images', function () {
   return gulp.src('src/images/*.*')
-      .pipe($.cache(imagemin({
+      .pipe($.cache($.imagemin({
         optimizationLevel: 3,
         progressive: true,
         interlaced: true
