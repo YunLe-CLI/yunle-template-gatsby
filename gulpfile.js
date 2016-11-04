@@ -8,7 +8,7 @@ gulp.task('html', function () {
   return gulp.src('src/**.html')
       .pipe(gulp.dest('.tmp'));
 });
-gulp.task('dist-html', function () {
+gulp.task('build-html', function () {
   var version = (new Date).valueOf() + '';
   var options = {
         removeComments: false, // 清除HTML注释
@@ -35,7 +35,7 @@ gulp.task('less', function(){
       .pipe(gulp.dest('.tmp/css'))
       .pipe(browserSync.stream());
 });
-gulp.task('dist-less', function(){
+gulp.task('build-less', function(){
   return gulp.src('src/less/*.less')
       .pipe($.less())
       .pipe($.autoprefixer({browsers:['> 1%', 'last 2 versions', 'Firefox ESR']}))
@@ -56,7 +56,7 @@ gulp.task('images', function () {
       })))
       .pipe(gulp.dest('.tmp/images'));
 });
-gulp.task('dist-images', function () {
+gulp.task('build-images', function () {
   return gulp.src('src/images/*.*')
       .pipe(gulp.dest('dist/images'));
 });
@@ -68,7 +68,7 @@ gulp.task('script', function() {
       .pipe(sourcemaps.write('.tmp/maps'))
       .pipe(gulp.dest('.tmp/js'))
 });
-gulp.task('dist-script', function() {
+gulp.task('build-script', function() {
   return gulp.src('src/js/*.js')
       .pipe($.uglify())
       .pipe(gulp.dest('dist/js'))
@@ -103,7 +103,7 @@ gulp.task('serve', ['html', 'less', 'images', 'script'], function () {
 });
 
 // 生产环境gulp任务
-gulp.task('build', ['dist-html', 'dist-less', 'dist-images', 'dist-script'], function() {
+gulp.task('build', ['build-html', 'build-less', 'build-images', 'build-script'], function() {
 
 });
 

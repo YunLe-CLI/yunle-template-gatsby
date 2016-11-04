@@ -9,6 +9,10 @@
   "scripts": {
     "dev": "gulp",
     "build": "gulp build",
+    "build-html": "gulp build-html",
+    "build-less": "gulp build-less",
+    "build-images": "gulp build-images",
+    "build-script": "gulp build-script",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +25,7 @@
     "url": "https://github.com/hexiao-o/yunle-template-gulp/issues"
   },
   "homepage": "https://github.com/hexiao-o/yunle-template-gulp#readme",
-  "dependencies": {
+  "devDependencies": {
     "browser-sync": "^2.17.5",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
