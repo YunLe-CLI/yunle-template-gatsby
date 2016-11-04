@@ -29,9 +29,9 @@ gulp.task('build-html', function () {
 // 自动编译less的任务
 gulp.task('less', function(){
   return gulp.src('src/less/*.less')
-      .pipe($.less())
       .pipe($.sourcemaps.init())
-      .pipe(sourcemaps.write('.tmp/maps'))
+      .pipe($.less())
+      .pipe($.sourcemaps.write('.maps'))
       .pipe(gulp.dest('.tmp/css'))
       .pipe(browserSync.stream());
 });
@@ -65,23 +65,17 @@ gulp.task('build-images', function () {
 gulp.task('script', function() {
   return gulp.src('src/js/*.js')
       .pipe($.sourcemaps.init())
-      .pipe(sourcemaps.write('.tmp/maps'))
+      .pipe($.babel({
+          presets: ['es2015']
+      }))
+      .pipe($.sourcemaps.write('.maps'))
       .pipe(gulp.dest('.tmp/js'))
+      .pipe(browserSync.stream());
 });
 gulp.task('build-script', function() {
   return gulp.src('src/js/*.js')
       .pipe($.uglify())
       .pipe(gulp.dest('dist/js'))
-});
-
-// 清理文件
-gulp.task('clean' , function(){
-   return gulp.src([
-            'dist/**',
-            '.tmp/**',
-            '!.gitignore'
-         ])
-         .pipe($.clean());
 });
 
 // 开发环境gulp任务
@@ -99,7 +93,9 @@ gulp.task('serve', ['html', 'less', 'images', 'script'], function () {
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
   //监听html文件的变化，自动重新载入
-  gulp.watch('src/**.html').on('change', browserSync.reload);
+  gulp.watch('src/**.html').on('change', browserSync.reload).on('change', function(event){
+      console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+  });
 });
 
 // 生产环境gulp任务

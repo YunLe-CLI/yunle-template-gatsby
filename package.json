@@ -7,8 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "gulp",
-    "build": "gulp build",
+    "dev": "npm run clean && gulp",
+    "clean": "rimraf .tmp && rimraf dist",
+    "build": "npm run clean && gulp build",
     "build-html": "gulp build-html",
     "build-less": "gulp build-less",
     "build-images": "gulp build-images",
@@ -16,8 +17,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hexiao-o/yunle-template-gulp.git"
+    "url": "git+https://github.com/hexiao-o/yunle-template-gulp.git",
+    "type": "git"
   },
   "author": "hexiao-o",
   "license": "ISC",
@@ -26,9 +27,11 @@
   },
   "homepage": "https://github.com/hexiao-o/yunle-template-gulp#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
     "browser-sync": "^2.17.5",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
+    "gulp-babel": "^6.1.2",
     "gulp-cache": "^0.4.5",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.0",
@@ -41,10 +44,9 @@
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
     "gulp-rev-append": "^0.1.6",
+    "gulp-sourcemaps": "^2.2.0",
     "gulp-uglify": "^2.0.0",
-    "gulp-useref": "^3.1.2"
-  },
-  "devDependencies": {
-    "gulp-sourcemaps": "^2.2.0"
+    "gulp-useref": "^3.1.2",
+    "rimraf": "^2.5.4"
   }
 }
