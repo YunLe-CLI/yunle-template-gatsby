@@ -39,5 +39,8 @@
     "gulp-rev-append": "^0.1.6",
     "gulp-uglify": "^2.0.0",
     "gulp-useref": "^3.1.2"
+  },
+  "devDependencies": {
+    "gulp-sourcemaps": "^2.2.0"
   }
 }

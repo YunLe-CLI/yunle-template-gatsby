@@ -30,6 +30,8 @@ gulp.task('dist-html', function () {
 gulp.task('less', function(){
   return gulp.src('src/less/*.less')
       .pipe($.less())
+      .pipe($.sourcemaps.init())
+      .pipe(sourcemaps.write('.tmp/maps'))
       .pipe(gulp.dest('.tmp/css'))
       .pipe(browserSync.stream());
 });
@@ -62,6 +64,8 @@ gulp.task('dist-images', function () {
 // 压缩 js 文件
 gulp.task('script', function() {
   return gulp.src('src/js/*.js')
+      .pipe($.sourcemaps.init())
+      .pipe(sourcemaps.write('.tmp/maps'))
       .pipe(gulp.dest('.tmp/js'))
 });
 gulp.task('dist-script', function() {
