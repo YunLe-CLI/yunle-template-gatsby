@@ -1,7 +1,14 @@
 // 引入gulp、gulp插件以及browser-sync
 var gulp = require('gulp'),
+    proxyMiddleware = require('http-proxy-middleware'),
     browserSync = require('browser-sync').create(),
     $ = require('gulp-load-plugins')();
+
+var config = require('./app/config/server.config');
+var mockRouter = require('./app/router/API.mock');
+
+var target = config.proxy.host;
+var proxyPath = config.proxy.path;
 
 // 自动编译html的任务
 gulp.task('html', function () {
@@ -82,9 +89,15 @@ gulp.task('clean' , function(){
 
 // 开发环境gulp任务
 gulp.task('serve', ['html', 'less', 'images', 'script'], function () {
+  // 代理
+  var _proxyMiddleware = proxyMiddleware([proxyPath], { target: target, changeOrigin: true });
+  var middleware = [
+    _proxyMiddleware
+  ];
   browserSync.init({
     notify : false,
-    server: '.tmp'
+    server: '.tmp',
+    middleware: middleware.concat(mockRouter)
   });
   // 监听js文件的变化，自动执行'script'任务
   gulp.watch("src/js/**.js", ['script']).on('change', function(event){
