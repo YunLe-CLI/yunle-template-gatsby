@@ -14,9 +14,20 @@
 .
 ├── .tmp                     # 开发临时文件
 ├── dist                     # 打包后文件
+├── app                      # gulp Server
+│   ├── config               # 配置
+│       ├── server.config    # server
+│   ├── router               # 路由
+│       ├── API.mock.js      # mock接口数据路由
 ├── src                      # 应用源文件
 │   ├── less                 # less源文件
 │   ├── images               # images源文件
 │   ├── js                   # js源文件
 ├── test                     # 单元测试
+```
+
+## mockjs学习
+
+```
+http://mockjs.com/
 ```

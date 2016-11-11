@@ -5,7 +5,6 @@ module.exports = [
   {
     route: '/api/mock/',
     handle: function(req, res, next) {
-      console.log(111)
       var data = Mock.mock({
         data: {
           'list|0-10': [
@@ -18,7 +17,6 @@ module.exports = [
         message: "",
         serverTime: '@now'
       });
-      console.log(res, data)
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(data));
     },
