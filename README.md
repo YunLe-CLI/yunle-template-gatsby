@@ -4,7 +4,7 @@
 
 1. `npm install -g yunle-cli`
 
-2. `yunle install gulp <project-name>`
+2. `yunle init gulp <project-name>`
 
 2. `cd <project-name> && npm install`
 
