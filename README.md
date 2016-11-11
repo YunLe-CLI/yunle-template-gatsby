@@ -1,5 +1,11 @@
 # yunle-template-gulp
 
+如使用该前端脚手架，可以先安装
+
+1. `npm install -g yunle-cli`
+
+2. `yunle install gulp [项目目录名]`
+
 开发过程中，你用得最多的会是`npm run dev`，但是这里还有很多其它的处理：
 
 
