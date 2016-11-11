@@ -4,7 +4,9 @@
 
 1. `npm install -g yunle-cli`
 
-2. `yunle install gulp [项目目录名]`
+2. `yunle install gulp <project-name>`
+
+2. `cd <project-name> && npm install`
 
 开发过程中，你用得最多的会是`npm run dev`，但是这里还有很多其它的处理：
 
