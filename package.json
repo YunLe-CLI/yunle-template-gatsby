@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "yunle template gulp",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "dev": "gulp",
     "build": "gulp build",
