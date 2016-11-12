@@ -10,7 +10,7 @@
     "build-less": "gulp build-less",
     "build-images": "gulp build-images",
     "build-script": "gulp build-script",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
   "homepage": "https://github.com/hexiao-o/yunle-template-gulp#readme",
   "devDependencies": {
     "browser-sync": "^2.17.5",
+    "chai": "^3.5.0",
+    "codecov": "^1.0.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-cache": "^0.4.5",
@@ -41,6 +43,7 @@
     "gulp-uglify": "^2.0.0",
     "gulp-useref": "^3.1.2",
     "http-proxy-middleware": "^0.17.2",
+    "mocha": "^3.1.2",
     "mockjs": "^1.0.1-beta3"
   }
 }
