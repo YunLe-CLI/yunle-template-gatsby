@@ -1,4 +1,4 @@
-# yunle-template-gulp
+# yunle-template-gulp [![Build Status](https://travis-ci.org/hexiao-o/yunle-template-gulp.svg?branch=master)](https://travis-ci.org/hexiao-o/yunle-template-gulp)
 
 如使用该前端脚手架，可以先安装
 
