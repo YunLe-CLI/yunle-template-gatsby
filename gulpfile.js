@@ -35,13 +35,13 @@ gulp.task('build-html', function () {
 
 // 自动编译less的任务
 gulp.task('less', function(){
-  return gulp.src('src/less/*.less')
+  return gulp.src('src/less/**.less')
       .pipe($.less())
       .pipe(gulp.dest('.tmp/css'))
       .pipe(browserSync.stream());
 });
 gulp.task('build-less', function(){
-  return gulp.src('src/less/*.less')
+  return gulp.src('src/less/**.less')
       .pipe($.less())
       .pipe($.autoprefixer({browsers:['> 1%', 'last 2 versions', 'Firefox ESR']}))
       .pipe($.minifyCss())
@@ -53,7 +53,7 @@ gulp.task('build-less', function(){
 
 // 压缩图片任务
 gulp.task('images', function () {
-  return gulp.src('src/images/*.*')
+  return gulp.src('src/images/**.*')
       .pipe($.cache($.imagemin({
         optimizationLevel: 3,
         progressive: true,
@@ -62,29 +62,27 @@ gulp.task('images', function () {
       .pipe(gulp.dest('.tmp/images'));
 });
 gulp.task('build-images', function () {
-  return gulp.src('src/images/*.*')
+  return gulp.src('src/images/**.*')
       .pipe(gulp.dest('dist/images'));
 });
 
 // 压缩 js 文件
 gulp.task('script', function() {
-  return gulp.src('src/js/*.js')
+  return gulp.src('src/js/**.js')
       .pipe(gulp.dest('.tmp/js'))
 });
 gulp.task('build-script', function() {
-  return gulp.src('src/js/*.js')
+  return gulp.src('src/js/**.js')
       .pipe($.uglify())
       .pipe(gulp.dest('dist/js'))
 });
 
-// 清理文件
-gulp.task('clean' , function(){
-   return gulp.src([
-            'dist/**',
-            '.tmp/**',
-            '!.gitignore'
-         ])
-         .pipe($.clean());
+// 语法检测
+gulp.task('build-eslint', () => {
+  return gulp.src(['src/js/**.js'])
+      .pipe($.eslint({ configFle: './.eslintrc' }))
+      .pipe($.eslint.format())
+      .pipe($.eslint.failAfterError());
 });
 
 // 开发环境gulp任务
@@ -113,7 +111,7 @@ gulp.task('serve', ['html', 'less', 'images', 'script'], function () {
 
 // 生产环境gulp任务
 gulp.task('build', ['build-html', 'build-less', 'build-images', 'build-script'], function() {
-
+  console.log('打包完成！');
 });
 
 //默认启动的gulp任务数组['serve']

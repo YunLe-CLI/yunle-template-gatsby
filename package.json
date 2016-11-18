@@ -9,8 +9,9 @@
     "build-html": "gulp build-html",
     "build-less": "gulp build-less",
     "build-images": "gulp build-images",
+    "build-eslint": "gulp build-eslint",
     "build-script": "gulp build-script",
-    "test": "mocha"
+    "test": "mocha  --recursive"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,13 @@
   "devDependencies": {
     "browser-sync": "^2.17.5",
     "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "codecov": "^1.0.1",
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.1",
+    "eslint-plugin-react": "^6.7.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-cache": "^0.4.5",
