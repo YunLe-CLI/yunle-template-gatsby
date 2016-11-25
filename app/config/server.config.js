@@ -1,11 +1,6 @@
 'use strict';
 const path = require('path');
-
 const NODE_ENV = process.env.NODE_ENV === 'production';
-let host = 'localhost';
-if (NODE_ENV) {
-  host = 'usersMongo';
-}
 
 module.exports = {
   env: !NODE_ENV,
