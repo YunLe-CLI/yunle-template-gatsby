@@ -19,6 +19,7 @@ module.exports = [
       });
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(data));
+      next();
     },
   },
 ];
