@@ -13,7 +13,8 @@ var proxyPath = config.proxy.path;
 // 自动编译html的任务
 gulp.task('html', function () {
   return gulp.src('src/**.html')
-      .pipe(gulp.dest('.tmp'));
+      .pipe(gulp.dest('.tmp'))
+      .pipe($.notify("html 编译成功!"));
 });
 gulp.task('build-html', function () {
   var version = (new Date).valueOf() + '';
@@ -30,7 +31,8 @@ gulp.task('build-html', function () {
   return gulp.src('src/**.html')
       .pipe($.revAppend())
       .pipe($.htmlmin(options))
-      .pipe(gulp.dest('dist'));
+      .pipe(gulp.dest('dist'))
+      .pipe($.notify("html 编译成功!"));
 });
 
 // 自动编译less的任务
@@ -38,7 +40,8 @@ gulp.task('less', function(){
   return gulp.src('src/less/**.less')
       .pipe($.less())
       .pipe(gulp.dest('.tmp/css'))
-      .pipe(browserSync.stream());
+      .pipe(browserSync.stream())
+      .pipe($.notify("less 编译成功!"));
 });
 gulp.task('build-less', function(){
   return gulp.src('src/less/**.less')
@@ -49,6 +52,7 @@ gulp.task('build-less', function(){
         suffix: ".min"
       }))
       .pipe(gulp.dest('dist/css'))
+      .pipe($.notify("less 编译成功!"));
 });
 
 // 压缩图片任务
@@ -59,11 +63,13 @@ gulp.task('images', function () {
         progressive: true,
         interlaced: true
       })))
-      .pipe(gulp.dest('.tmp/images'));
+      .pipe(gulp.dest('.tmp/images'))
+      .pipe($.notify("images 编译成功!"));
 });
 gulp.task('build-images', function () {
   return gulp.src('src/images/**.*')
-      .pipe(gulp.dest('dist/images'));
+      .pipe(gulp.dest('dist/images'))
+      .pipe($.notify("images 编译成功!"));
 });
 
 // 压缩 js 文件
@@ -75,14 +81,22 @@ gulp.task('build-script', function() {
   return gulp.src('src/js/**.js')
       .pipe($.uglify())
       .pipe(gulp.dest('dist/js'))
+      .pipe($.notify("js 编译成功!"));
 });
-
 // 语法检测
+gulp.task('eslint', () => {
+  return gulp.src(['src/js/**.js'])
+      .pipe($.eslint({ configFle: './.eslintrc' }))
+      .pipe($.eslint.format())
+      .pipe($.eslint.failAfterError())
+      .pipe($.notify("语法检测成功!"));
+});
 gulp.task('build-eslint', () => {
   return gulp.src(['src/js/**.js'])
       .pipe($.eslint({ configFle: './.eslintrc' }))
       .pipe($.eslint.format())
-      .pipe($.eslint.failAfterError());
+      .pipe($.eslint.failAfterError())
+      .pipe($.notify("语法检测成功!"));
 });
 
 // 开发环境gulp任务
