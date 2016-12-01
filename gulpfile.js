@@ -12,7 +12,7 @@ var proxyPath = config.proxy.path;
 
 // 自动编译html的任务
 gulp.task('html', function () {
-  return gulp.src('src/**.html')
+  return gulp.src('src/view/**.html')
       .pipe(gulp.dest('.tmp'))
       .pipe($.notify("html 编译成功!"));
 });
@@ -28,10 +28,10 @@ gulp.task('build-html', function () {
         minifyJS: true, // 压缩页面里的JS
         minifyCSS: true // 压缩页面里的CSS
     };
-  return gulp.src('src/**.html')
+  return gulp.src('src/view/**.html')
       .pipe($.revAppend())
       .pipe($.htmlmin(options))
-      .pipe(gulp.dest('dist'))
+      .pipe(gulp.dest('dist/view'))
       .pipe($.notify("html 编译成功!"));
 });
 

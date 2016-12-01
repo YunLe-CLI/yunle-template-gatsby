@@ -6,7 +6,7 @@ module.exports = {
   env: !NODE_ENV,
   port: NODE_ENV ? 3000 : 3000,
   proxy: {
-    host: 'https://www.baidu.com/',
-    path: '/s',
+    host: 'http://rap.taobao.org/',
+    path: '/mockjsdata',
   }
 };
