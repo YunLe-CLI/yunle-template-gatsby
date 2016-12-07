@@ -71,19 +71,19 @@ gulp.task('build-less', function(){
 // 压缩图片任务
 gulp.task('images', function () {
   return gulp.src('src/images/**.*')
-      .pipe($.cache($.imagemin({
-        optimizationLevel: 3,
-        progressive: true,
-        interlaced: true
-      })))
       .on('error', handleErrors)
       .pipe(gulp.dest('.tmp/images'))
       .pipe($.notify("images 编译成功!"));
 });
 gulp.task('build-images', function () {
   return gulp.src('src/images/**.*')
+      .pipe($.cache($.imagemin({
+        optimizationLevel: 3,
+        progressive: true,
+        interlaced: true
+      })))
       .on('error', handleErrors)
-      .pipe(gulp.dest('dist/images'))
+      .pipe(gulp.dest('.dist/images'))
       .pipe($.notify("images 编译成功!"));
 });
 
