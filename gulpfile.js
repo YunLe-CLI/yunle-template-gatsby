@@ -7,8 +7,7 @@ var gulp = require('gulp'),
 var config = require('./app/config/server.config');
 var mockRouter = require('./app/router/API.mock');
 
-var target = config.proxy.host;
-var proxyPath = config.proxy.path;
+var proxys = config.proxys;
 
 function handleErrors(err) {
   var args = Array.prototype.slice.call(arguments);
@@ -114,10 +113,10 @@ gulp.task('eslint', () => {
 // 开发环境gulp任务
 gulp.task('serve', ['html', 'less', 'images', 'script', 'eslint'], function () {
   // 代理
-  var _proxyMiddleware = proxyMiddleware([proxyPath], { target: target, changeOrigin: true });
-  var middleware = [
-    _proxyMiddleware
-  ];
+  var middleware = [];
+  for (var i = 0; i < proxys.length; i++) {
+    middleware.push(proxyMiddleware([proxys[i].path], { target: proxys[i].host, changeOrigin: true }))
+  }
   browserSync.init({
     notify : false,
     server: '.tmp',
