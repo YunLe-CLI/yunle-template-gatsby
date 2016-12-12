@@ -1,16 +1,19 @@
-// 引入gulp、gulp插件以及browser-sync
-var gulp = require('gulp'),
-    proxyMiddleware = require('http-proxy-middleware'),
-    browserSync = require('browser-sync').create(),
-    $ = require('gulp-load-plugins')();
+const gulp = require('gulp');
+const proxyMiddleware = require('http-proxy-middleware');
+const browserSync = require('browser-sync').create();
+const $ = require('gulp-load-plugins')();
+var autoprefixer = require('autoprefixer'),
+    cssnano = require('cssnano');
+const config = require('./app/config/server.config');
+const mockRouter = require('./app/router/API.mock');
 
-var config = require('./app/config/server.config');
-var mockRouter = require('./app/router/API.mock');
-
-var proxys = config.proxys;
+const proxys = config.proxys;
+const PATHS = {
+  html: ['./src/view/**.html'],
+};
 
 function handleErrors(err) {
-  var args = Array.prototype.slice.call(arguments);
+  const args = Array.prototype.slice.call(arguments);
   $.notify.onError({
       title: 'compile error',
       message: '<%=error.message %>'
@@ -20,50 +23,69 @@ function handleErrors(err) {
 
 // 自动编译html的任务
 gulp.task('html', function () {
-  return gulp.src('src/view/**.html')
-      .pipe(gulp.dest('.tmp'))
+  return gulp.src(PATHS.html)
+      .pipe($.revAppend({
+          assetsDir: '/public'
+      }))
       .on('error', handleErrors)
-      .pipe($.notify("html 编译成功!"));
+      .pipe(gulp.dest('.tmp'))
+      // .pipe($.notify("html 编译成功!"));
 });
 gulp.task('build-html', function () {
-  var version = (new Date).valueOf() + '';
-  var options = {
-        removeComments: false, // 清除HTML注释
-        collapseWhitespace: true, // 压缩HTML
-        collapseBooleanAttributes: false, // 省略布尔属性的值 <input checked="true"/> ==> <input />
-        removeEmptyAttributes: false, // 删除所有空格作属性值 <input id="" /> ==> <input />
-        removeScriptTypeAttributes: false, // 删除<script>的type="text/javascript"
-        removeStyleLinkTypeAttributes: false, // 删除<style>和<link>的type="text/css"
-        minifyJS: true, // 压缩页面里的JS
-        minifyCSS: true // 压缩页面里的CSS
-    };
-  return gulp.src('src/view/**.html')
-      .pipe($.revAppend())
+  const version = (new Date).valueOf() + '';
+  const options = {
+    removeComments: true, // 清除HTML注释
+    collapseWhitespace: false, // 压缩HTML
+    collapseBooleanAttributes: true, // 省略布尔属性的值 <input checked="true"/> ==> <input />
+    removeEmptyAttributes: true, // 删除所有空格作属性值 <input id="" /> ==> <input />
+    removeScriptTypeAttributes: true, // 删除<script>的type="text/javascript"
+    removeStyleLinkTypeAttributes: true, // 删除<style>和<link>的type="text/css"
+    minifyJS: true, // 压缩页面里的JS
+    minifyCSS: true, // 压缩页面里的CSS
+  };
+  return gulp.src(PATHS.html)
+      .pipe($.revAppend({
+          assetsDir: '/teset'
+      }))
       .pipe($.htmlmin(options))
       .on('error', handleErrors)
       .pipe(gulp.dest('dist/view'))
-      .pipe($.notify("html 编译成功!"));
+      // .pipe($.notify("html 编译成功!"));
 });
 
+const processors = [
+  autoprefixer({browsers: ['last 1 version']}),
+  cssnano(),
+];
+
+// 自动编译css的任务
+gulp.task('css', function () {
+    return gulp.src('src/styles/css/**.css')
+        .on('error', handleErrors)
+        .pipe($.sourcemaps.init())
+        .pipe($.postcss(processors))
+        .pipe($.sourcemaps.write('./maps'))
+        .pipe(gulp.dest('.tmp/css'))
+        .pipe($.minifyCss())
+        .pipe($.rename({ suffix: '.min' }))
+        .pipe(gulp.dest('.tmp/css'))
+        .pipe(browserSync.stream())
+        .pipe(gulp.dest('./dest'))
+        .pipe($.notify("css 编译成功!"));
+});
 // 自动编译less的任务
 gulp.task('less', function(){
-  return gulp.src('src/less/**.less')
-      .pipe($.less())
+  return gulp.src('src/styles/less/**.less')
       .on('error', handleErrors)
+      .pipe($.sourcemaps.init())
+      .pipe($.less())
+      .pipe($.postcss(processors))
+      .pipe($.sourcemaps.write('./maps'))
+      .pipe(gulp.dest('.tmp/css'))
+      .pipe($.minifyCss())
+      .pipe($.rename({ suffix: '.min' }))
       .pipe(gulp.dest('.tmp/css'))
       .pipe(browserSync.stream())
-      .pipe($.notify("less 编译成功!"));
-});
-gulp.task('build-less', function(){
-  return gulp.src('src/less/**.less')
-      .pipe($.less())
-      .pipe($.autoprefixer({browsers:['> 1%', 'last 2 versions', 'Firefox ESR']}))
-      .pipe($.minifyCss())
-      .pipe($.rename({
-        suffix: ".min"
-      }))
-      .on('error', handleErrors)
-      .pipe(gulp.dest('dist/css'))
       .pipe($.notify("less 编译成功!"));
 });
 
@@ -82,7 +104,7 @@ gulp.task('build-images', function () {
         interlaced: true
       })))
       .on('error', handleErrors)
-      .pipe(gulp.dest('.dist/images'))
+      .pipe(gulp.dest('dist/images'))
       .pipe($.notify("images 编译成功!"));
 });
 
@@ -111,7 +133,7 @@ gulp.task('eslint', () => {
 });
 
 // 开发环境gulp任务
-gulp.task('serve', ['html', 'less', 'images', 'script', 'eslint'], function () {
+gulp.task('serve', ['html', 'css', 'less', 'images', 'script', 'eslint'], function () {
   // 代理
   var middleware = [];
   for (var i = 0; i < proxys.length; i++) {
@@ -120,14 +142,20 @@ gulp.task('serve', ['html', 'less', 'images', 'script', 'eslint'], function () {
   browserSync.init({
     notify : false,
     server: '.tmp',
+    port: config.port,
+    open: 'external',
     middleware: middleware.concat(mockRouter)
   });
   // 监听js文件的变化，自动执行'script'任务
   gulp.watch("src/js/**.js", ['script']).on('change', function(event){
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
+  // 监听css文件的变化，自动执行'css'任务
+  gulp.watch('src/styles/css/**.css', ['css']).on('change', function(event){
+      console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+  });
   // 监听less文件的变化，自动执行'less'任务
-  gulp.watch('src/less/*.less', ['less']).on('change', function(event){
+  gulp.watch('src/styles/less/**.less', ['less']).on('change', function(event){
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
   // 监听images文件的变化，自动执行'images'任务
@@ -135,7 +163,7 @@ gulp.task('serve', ['html', 'less', 'images', 'script', 'eslint'], function () {
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
   //监听html文件的变化，自动重新载入
-  gulp.watch('src/**.html').on('change', browserSync.reload);
+  gulp.watch('src/view/**.html', ['html']).on('change', browserSync.reload);
 });
 
 gulp.task('clean', function () {
@@ -151,7 +179,7 @@ gulp.task('build-clean', function () {
 });
 
 // 生产环境gulp任务
-gulp.task('build', ['build-html', 'build-less', 'build-images', 'build-script', 'eslint'], function() {
+gulp.task('build', ['build-html', 'less', 'build-images', 'build-script', 'eslint'], function() {
   console.log('打包完成！');
 });
 

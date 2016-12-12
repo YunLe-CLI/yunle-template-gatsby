@@ -3,9 +3,9 @@ const Mock = require('mockjs');
 
 module.exports = [
   {
-    route: '/api/mock/',
+    route: '/api/mock',
     handle: function(req, res, next) {
-      var data = Mock.mock({
+      const data = Mock.mock({
         data: {
           'list|0-10': [
             {
