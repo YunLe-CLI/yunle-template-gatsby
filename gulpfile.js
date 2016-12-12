@@ -10,6 +10,8 @@ const mockRouter = require('./app/router/API.mock');
 const proxys = config.proxys;
 const PATHS = {
   html: ['./src/view/**.html'],
+  styleCss: ['./src/styles/css/**.css'],
+  styleLess: ['./src/styles/less/**.less'],
 };
 
 function handleErrors(err) {
@@ -60,7 +62,7 @@ const processors = [
 
 // 自动编译css的任务
 gulp.task('css', function () {
-    return gulp.src('src/styles/css/**.css')
+    return gulp.src(PATHS.styleCss)
         .on('error', handleErrors)
         .pipe($.sourcemaps.init())
         .pipe($.postcss(processors))
@@ -75,7 +77,7 @@ gulp.task('css', function () {
 });
 // 自动编译less的任务
 gulp.task('less', function(){
-  return gulp.src('src/styles/less/**.less')
+  return gulp.src(PATHS.styleLess)
       .on('error', handleErrors)
       .pipe($.sourcemaps.init())
       .pipe($.less())
@@ -151,11 +153,11 @@ gulp.task('serve', ['html', 'css', 'less', 'images', 'script', 'eslint'], functi
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
   // 监听css文件的变化，自动执行'css'任务
-  gulp.watch('src/styles/css/**.css', ['css']).on('change', function(event){
+  gulp.watch(PATHS.styleCss, ['css']).on('change', function(event){
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
   // 监听less文件的变化，自动执行'less'任务
-  gulp.watch('src/styles/less/**.less', ['less']).on('change', function(event){
+  gulp.watch(PATHS.styleLess, ['less']).on('change', function(event){
       console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
   // 监听images文件的变化，自动执行'images'任务
