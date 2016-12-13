@@ -102,7 +102,7 @@ gulp.task('less', function(){
       .pipe(browserSync.stream())
       .pipe($.notify("less 编译成功!"));
 });
-gulp.task('less-build', function(){
+gulp.task('build-less', function(){
   return gulp.src(PATHS.styleLess)
       .on('error', handleErrors)
       .pipe($.sourcemaps.init())
