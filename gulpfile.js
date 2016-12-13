@@ -67,12 +67,24 @@ gulp.task('css', function () {
         .pipe($.sourcemaps.init())
         .pipe($.postcss(processors))
         .pipe($.sourcemaps.write('./maps'))
-        .pipe(gulp.dest('.tmp/css'))
+        .pipe(gulp.dest('dist/css'))
         .pipe($.minifyCss())
         .pipe($.rename({ suffix: '.min' }))
-        .pipe(gulp.dest('.tmp/css'))
+        .pipe(gulp.dest('dist/css'))
         .pipe(browserSync.stream())
-        .pipe(gulp.dest('./dest'))
+        .pipe($.notify("css 编译成功!"));
+});
+gulp.task('build-css', function () {
+    return gulp.src(PATHS.styleCss)
+        .on('error', handleErrors)
+        .pipe($.sourcemaps.init())
+        .pipe($.postcss(processors))
+        .pipe($.sourcemaps.write('./maps'))
+        .pipe(gulp.dest('dist/css'))
+        .pipe($.minifyCss())
+        .pipe($.rename({ suffix: '.min' }))
+        .pipe(gulp.dest('dist/css'))
+        .pipe(browserSync.stream())
         .pipe($.notify("css 编译成功!"));
 });
 // 自动编译less的任务
@@ -87,6 +99,20 @@ gulp.task('less', function(){
       .pipe($.minifyCss())
       .pipe($.rename({ suffix: '.min' }))
       .pipe(gulp.dest('.tmp/css'))
+      .pipe(browserSync.stream())
+      .pipe($.notify("less 编译成功!"));
+});
+gulp.task('less-build', function(){
+  return gulp.src(PATHS.styleLess)
+      .on('error', handleErrors)
+      .pipe($.sourcemaps.init())
+      .pipe($.less())
+      .pipe($.postcss(processors))
+      .pipe($.sourcemaps.write('./maps'))
+      .pipe(gulp.dest('dist/css'))
+      .pipe($.minifyCss())
+      .pipe($.rename({ suffix: '.min' }))
+      .pipe(gulp.dest('dist/css'))
       .pipe(browserSync.stream())
       .pipe($.notify("less 编译成功!"));
 });
@@ -181,7 +207,7 @@ gulp.task('build-clean', function () {
 });
 
 // 生产环境gulp任务
-gulp.task('build', ['build-html', 'less', 'build-images', 'build-script', 'eslint'], function() {
+gulp.task('build', ['build-html', 'build-css', 'build-less', 'build-images', 'build-script', 'eslint'], function() {
   console.log('打包完成！');
 });
 
