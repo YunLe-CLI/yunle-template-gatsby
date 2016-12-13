@@ -17,8 +17,8 @@ describe('should gulpfile.js', function() {
     const tasks = {
   		'html': '编译html的任务',
       'build-html': '生产环境-编译html的任务',
+      'css': '编译css的任务',
       'less': '编译less的任务',
-      'build-less': '生产环境-编译less的任务',
       'images': '编译images的任务',
       'build-images': '生产环境-自动编译images的任务',
       'script': '编译script的任务',

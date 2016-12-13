@@ -10,11 +10,11 @@ describe('app/config/server.config.js', function() {
   it('should object', function() {
     expect(serverConfig).to.be.an('object');
   });
-  it('should env not empty', function() {
-    expect(serverConfig.env).to.be.not.empty;
-  });
-  it('should env not empty', function() {
+  it('should port not empty', function() {
     expect(serverConfig.port).to.be.not.empty;
+  });
+  it('should port a Number', function() {
+    expect(serverConfig.port).to.be.a('number');
   });
   it('should proxys not empty', function() {
     expect(serverConfig.proxys).to.be.not.empty;
