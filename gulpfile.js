@@ -3,7 +3,8 @@ const proxyMiddleware = require('http-proxy-middleware');
 const browserSync = require('browser-sync').create();
 const $ = require('gulp-load-plugins')();
 var autoprefixer = require('autoprefixer'),
-    cssnano = require('cssnano');
+    cssnano = require('cssnano'),
+    pngquant = require('imagemin-pngquant');
 const config = require('./app/config/server.config');
 const mockRouter = require('./app/router/API.mock');
 
@@ -119,17 +120,20 @@ gulp.task('build-less', function(){
 
 // 压缩图片任务
 gulp.task('images', function () {
-  return gulp.src('src/images/**.*')
+  return gulp.src('src/images/**.{png,jpg,gif,ico}')
       .on('error', handleErrors)
       .pipe(gulp.dest('.tmp/images'))
       .pipe($.notify("images 编译成功!"));
 });
 gulp.task('build-images', function () {
-  return gulp.src('src/images/**.*')
+  return gulp.src('src/images/**.{png,jpg,gif,ico}')
       .pipe($.cache($.imagemin({
         optimizationLevel: 3,
         progressive: true,
-        interlaced: true
+        interlaced: true,
+        multipass: true,
+        svgoPlugins: [{removeViewBox: false}],
+        use: [pngquant()],
       })))
       .on('error', handleErrors)
       .pipe(gulp.dest('dist/images'))
@@ -192,18 +196,6 @@ gulp.task('serve', ['html', 'css', 'less', 'images', 'script', 'eslint'], functi
   });
   //监听html文件的变化，自动重新载入
   gulp.watch('src/view/**.html', ['html']).on('change', browserSync.reload);
-});
-
-gulp.task('clean', function () {
-  return gulp.src('.tmp/**', {read: false})
-    .pipe($.clean())
-    .on('error', handleErrors);
-
-});
-gulp.task('build-clean', function () {
-  return gulp.src('dist/**', {read: false})
-    .pipe($.clean())
-    .on('error', handleErrors);
 });
 
 // 生产环境gulp任务
