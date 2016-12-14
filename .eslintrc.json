@@ -1,0 +1,8 @@
+{
+  "env": {
+      "node": false,
+      "commonjs": false,
+      "es6": false
+  },
+  "extends": "airbnb"
+}

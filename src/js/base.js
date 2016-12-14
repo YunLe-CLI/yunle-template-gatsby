@@ -1,4 +1,6 @@
 // 测试
-console.log('test111')
-
- var test = 1;
+const test = 1;
+function fun(data) {
+  return data;
+}
+fun(test);

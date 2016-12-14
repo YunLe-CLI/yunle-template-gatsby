@@ -4,9 +4,17 @@ const browserSync = require('browser-sync').create();
 const $ = require('gulp-load-plugins')();
 var autoprefixer = require('autoprefixer'),
     cssnano = require('cssnano'),
-    pngquant = require('imagemin-pngquant');
+    pngquant = require('imagemin-pngquant'),
+    minimist = require('minimist');
 const config = require('./app/config/server.config');
 const mockRouter = require('./app/router/API.mock');
+
+var knownOptions = {
+  string: 'env',
+  default: { env: process.env.NODE_ENV || 'production' }
+};
+
+var options = minimist(process.argv.slice(2), knownOptions);
 
 const proxys = config.proxys;
 const PATHS = {
@@ -27,6 +35,7 @@ function handleErrors(err) {
 // 自动编译html的任务
 gulp.task('html', function () {
   return gulp.src(PATHS.html)
+      .pipe($.changed('.tmp', {extension: '.html'}))
       .pipe($.revAppend({
           assetsDir: '/public'
       }))
@@ -47,6 +56,7 @@ gulp.task('build-html', function () {
     minifyCSS: true, // 压缩页面里的CSS
   };
   return gulp.src(PATHS.html)
+      .pipe($.changed('dist/view', {extension: '.html'}))
       .pipe($.revAppend({
           assetsDir: '/teset'
       }))
@@ -64,6 +74,7 @@ const processors = [
 // 自动编译css的任务
 gulp.task('css', function () {
     return gulp.src(PATHS.styleCss)
+        .pipe($.changed('.tmp', {extension: '.css'}))
         .on('error', handleErrors)
         .pipe($.sourcemaps.init())
         .pipe($.postcss(processors))
@@ -77,6 +88,7 @@ gulp.task('css', function () {
 });
 gulp.task('build-css', function () {
     return gulp.src(PATHS.styleCss)
+        .pipe($.changed('dist/css', {extension: '.css'}))
         .on('error', handleErrors)
         .pipe($.sourcemaps.init())
         .pipe($.postcss(processors))
@@ -91,6 +103,7 @@ gulp.task('build-css', function () {
 // 自动编译less的任务
 gulp.task('less', function(){
   return gulp.src(PATHS.styleLess)
+      .pipe($.changed('.tmp/css', {extension: '.less'}))
       .on('error', handleErrors)
       .pipe($.sourcemaps.init())
       .pipe($.less())
@@ -105,6 +118,7 @@ gulp.task('less', function(){
 });
 gulp.task('build-less', function(){
   return gulp.src(PATHS.styleLess)
+      .pipe($.changed('dist/css', {extension: '.less'}))
       .on('error', handleErrors)
       .pipe($.sourcemaps.init())
       .pipe($.less())
@@ -121,12 +135,14 @@ gulp.task('build-less', function(){
 // 压缩图片任务
 gulp.task('images', function () {
   return gulp.src('src/images/**.{png,jpg,gif,ico}')
+      .pipe($.changed('.tmp/images'))
       .on('error', handleErrors)
       .pipe(gulp.dest('.tmp/images'))
       .pipe($.notify("images 编译成功!"));
 });
 gulp.task('build-images', function () {
   return gulp.src('src/images/**.{png,jpg,gif,ico}')
+      .pipe($.changed('dist/images'))
       .pipe($.cache($.imagemin({
         optimizationLevel: 3,
         progressive: true,
@@ -143,11 +159,13 @@ gulp.task('build-images', function () {
 // 压缩 js 文件
 gulp.task('script', function() {
   return gulp.src('src/js/**.js')
+      .pipe($.changed('.tmp/js', {extension: '.js'}))
       .on('error', handleErrors)
       .pipe(gulp.dest('.tmp/js'))
 });
 gulp.task('build-script', function() {
   return gulp.src('src/js/**.js')
+      .pipe($.changed('dist/js', {extension: '.js'}))
       .pipe($.uglify())
       .on('error', handleErrors)
       .pipe(gulp.dest('dist/js'))
@@ -156,12 +174,10 @@ gulp.task('build-script', function() {
 
 // 语法检测
 gulp.task('eslint', () => {
-  return gulp.src(['src/js/**.js'])
-      .pipe($.eslint({ configFle: './.eslintrc' }))
+  return gulp.src(['src/js/**.js','!node_modules/**'])
+      .pipe($.eslint())
       .pipe($.eslint.format())
       .pipe($.eslint.failAfterError())
-      .on('error', handleErrors)
-      .pipe($.notify("语法检测成功!"));
 });
 
 // 开发环境gulp任务
