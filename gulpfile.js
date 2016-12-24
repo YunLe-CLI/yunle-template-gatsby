@@ -184,6 +184,10 @@ gulp.task('libs', () => {
   gulp.src('src/libs/**/**.*')
       .pipe(gulp.dest('.tmp/libs'))
 })
+gulp.task('build-libs', () => {
+  gulp.src('src/libs/**/**.*')
+      .pipe(gulp.dest('dist/libs'))
+})
 
 // 开发环境gulp任务
 gulp.task('serve', ['libs', 'html', 'css', 'less', 'images', 'script', 'eslint'], function () {
@@ -223,7 +227,7 @@ gulp.task('serve', ['libs', 'html', 'css', 'less', 'images', 'script', 'eslint']
 });
 
 // 生产环境gulp任务
-gulp.task('build', ['libs', 'build-html', 'build-css', 'build-less', 'build-images', 'build-script', 'eslint'], function() {
+gulp.task('build', ['build-libs', 'build-html', 'build-css', 'build-less', 'build-images', 'build-script', 'eslint'], function() {
   console.log('打包完成！');
 });
 
