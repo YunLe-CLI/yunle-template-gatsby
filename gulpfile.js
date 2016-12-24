@@ -180,8 +180,13 @@ gulp.task('eslint', () => {
       .pipe($.eslint.failAfterError())
 });
 
+gulp.task('libs', () => {
+  gulp.src('src/libs/**/**.*')
+      .pipe(gulp.dest('.tmp/libs'))
+})
+
 // 开发环境gulp任务
-gulp.task('serve', ['html', 'css', 'less', 'images', 'script', 'eslint'], function () {
+gulp.task('serve', ['libs', 'html', 'css', 'less', 'images', 'script', 'eslint'], function () {
   // 代理
   var middleware = [];
   for (var i = 0; i < proxys.length; i++) {
@@ -193,6 +198,9 @@ gulp.task('serve', ['html', 'css', 'less', 'images', 'script', 'eslint'], functi
     port: config.port,
     open: 'external',
     middleware: middleware.concat(mockRouter)
+  });
+  gulp.watch("src/libs/**/**.*", ['libs']).on('change', function(event){
+      console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
   // 监听js文件的变化，自动执行'script'任务
   gulp.watch("src/js/**.js", ['script']).on('change', function(event){
@@ -215,7 +223,7 @@ gulp.task('serve', ['html', 'css', 'less', 'images', 'script', 'eslint'], functi
 });
 
 // 生产环境gulp任务
-gulp.task('build', ['build-html', 'build-css', 'build-less', 'build-images', 'build-script', 'eslint'], function() {
+gulp.task('build', ['libs', 'build-html', 'build-css', 'build-less', 'build-images', 'build-script', 'eslint'], function() {
   console.log('打包完成！');
 });
 
