@@ -23,10 +23,8 @@ describe('should gulpfile.js', function() {
       'build-less': '编译less的任务',
       'images': '编译images的任务',
       'build-images': '生产环境-自动编译images的任务',
-      'script': '编译script的任务',
-      'build-script': '生产环境-编译script的任务',
-      // 'eslint': '语法检测成功',
-  		// 'build-eslint': '生产环境-语法检测成功',
+      // 'script': '编译script的任务',
+      // 'build-script': '生产环境-编译script的任务'
   	};
 
   	Object.keys(tasks).forEach((task) => {
