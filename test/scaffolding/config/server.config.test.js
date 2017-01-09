@@ -1,13 +1,44 @@
 var chai = require('chai');
 var expect = chai.expect;
 var chaiHttp = require('chai-http');
-var should = chai.should();
 var httpMocks = require('node-mocks-http');
-var request = {}; // define REQUEST
-var response = {}; // define RESPONSE
+var should = chai.should();
 chai.use(chaiHttp);
 
-var mockAPI = require('../../../../app/router/API.mock.js');
+var serverConfig = require('../../../config/server.config.js');
+var router = serverConfig.router;
+// console.log(router)
+
+describe('app/config/server.config.js', function() {
+  it('should object', function() {
+    expect(serverConfig).to.be.an('object');
+  });
+  it('should port not empty', function() {
+    expect(serverConfig.port).to.be.not.empty;
+  });
+  it('should port a Number', function() {
+    expect(serverConfig.port).to.be.a('number');
+  });
+  it('should proxys not empty', function() {
+    expect(serverConfig.proxys).to.be.not.empty;
+  });
+  it('should proxys an array', function() {
+    expect(serverConfig.proxys).to.be.an('array');
+  });
+  context('proxys in array', function() {
+    var proxys = serverConfig.proxys;
+    for (var i = 0; i < proxys.length ; i++) {
+      var proxy = proxys[i];
+      it('should proxy host an string ' + proxy.host, function() {
+        expect(proxy.host).to.be.a('string');
+      });
+      it('should proxy path an string ' + proxy.path, function() {
+        expect(proxy.path).to.be.a('string');
+      });
+    }
+  });
+
+});
 
 describe('app/router/API.mock.js', function() {
   context('Valid response', function() {
@@ -23,10 +54,10 @@ describe('app/router/API.mock.js', function() {
       done();
     });
     it('should response is array', function() {
-      expect(mockAPI).to.be.an('array');
+      expect(router).to.be.an('array');
     });
-    for (var i = 0; i < mockAPI.length; i++) {
-      var thatRouter = mockAPI[i];
+    for (var i = 0; i < router.length; i++) {
+      var thatRouter = router[i];
       it('should array item an object --' + thatRouter.route, function() {
         expect(thatRouter).to.be.an('object');
       });
@@ -57,5 +88,4 @@ describe('app/router/API.mock.js', function() {
       });
     }
   });
-
 });
