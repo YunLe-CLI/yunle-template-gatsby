@@ -16,6 +16,10 @@ const router = config.router || [];
 const proxys = config.proxys || [];
 
 const errFun = { errorHandler: $.notify.onError('Error: <%= error.message %>') };
+const imgBase64 = {
+  maxImageSize: 20 * 1024,
+  debug: true
+};
 const knownOptions = {
   string: 'env',
   default: { env: process.env.NODE_ENV || 'env' },
@@ -64,6 +68,8 @@ gulp.task('less', function () {
         autoprefixer({ browsers: ['last 1 version'] }),
       ]))
       .pipe(gulp.dest(output.dev.less))
+      .pipe($.base64(imgBase64))
+      .pipe(gulp.dest(output.dev.less))
       .pipe(browserSync.stream());
 });
 gulp.task('build-less', function () {
@@ -75,6 +81,8 @@ gulp.task('build-less', function () {
         cssnano(),
       ]))
       .pipe(gulp.dest(output.pro.less))
+      .pipe($.base64(imgBase64))
+      .pipe(gulp.dest(output.dev.less))
       .pipe(browserSync.stream());
 });
 
@@ -87,6 +95,8 @@ gulp.task('css', function () {
           autoprefixer({ browsers: ['last 1 version'] }),
         ]))
         .pipe(gulp.dest(output.dev.css))
+        .pipe($.base64(imgBase64))
+        .pipe(gulp.dest(output.dev.css))
         .pipe(browserSync.stream());
 });
 gulp.task('build-css', function () {
@@ -97,6 +107,8 @@ gulp.task('build-css', function () {
           autoprefixer({ browsers: ['last 1 version'] }),
           cssnano(),
         ]))
+        .pipe(gulp.dest(output.pro.css))
+        .pipe($.base64(imgBase64))
         .pipe(gulp.dest(output.pro.css))
         .pipe(browserSync.stream());
 });
