@@ -24,6 +24,7 @@ const knownOptions = {
   string: 'env',
   default: { env: process.env.NODE_ENV || 'env' },
 };
+const autoConfig = { browsers: ['last 10 version'] };
 
 const options = minimist(process.argv.slice(2), knownOptions);
 
@@ -65,7 +66,7 @@ gulp.task('less', function () {
       .pipe($.plumber(errFun))
       .pipe($.less())
       .pipe($.postcss([
-        autoprefixer({ browsers: ['last 1 version'] }),
+        autoprefixer(autoConfig),
       ]))
       .pipe(gulp.dest(output.dev.less))
       .pipe($.base64(imgBase64))
@@ -77,7 +78,7 @@ gulp.task('build-less', function () {
       .pipe($.plumber(errFun))
       .pipe($.less())
       .pipe($.postcss([
-        autoprefixer({ browsers: ['last 1 version'] }),
+        autoprefixer(autoConfig),
         cssnano(),
       ]))
       .pipe(gulp.dest(output.pro.less))
@@ -92,7 +93,7 @@ gulp.task('css', function () {
         .pipe($.plumber(errFun))
         .pipe($.changed(output.dev.css, { extension: '.css' }))
         .pipe($.postcss([
-          autoprefixer({ browsers: ['last 1 version'] }),
+          autoprefixer(autoConfig),
         ]))
         .pipe(gulp.dest(output.dev.css))
         .pipe($.base64(imgBase64))
@@ -104,7 +105,7 @@ gulp.task('build-css', function () {
         .pipe($.plumber(errFun))
         .pipe($.changed(output.pro.css, { extension: '.css' }))
         .pipe($.postcss([
-          autoprefixer({ browsers: ['last 1 version'] }),
+          autoprefixer(autoConfig),
           cssnano(),
         ]))
         .pipe(gulp.dest(output.pro.css))
@@ -176,7 +177,7 @@ gulp.task('build-libs', function () {
 });
 
 // 开发环境server
-gulp.task('server', ['libs', 'html', 'less', 'css', 'images', 'script'], function () {
+gulp.task('server', ['libs', 'less', 'css', 'images', 'script', 'html'], function () {
   const middleware = [];
   proxys.map(function (item) {
     middleware.push(proxyMiddleware(
@@ -199,7 +200,7 @@ gulp.task('server', ['libs', 'html', 'less', 'css', 'images', 'script'], functio
 });
 
 // 生产环境gulp任务
-gulp.task('build', ['build-libs', 'build-html', 'build-less', 'build-css', 'build-images', 'build-script'], function() {
+gulp.task('build', ['build-libs', 'build-less', 'build-css', 'build-images', 'build-script', 'build-html'], function() {
   console.info('打包生产环境成功!');
 });
 

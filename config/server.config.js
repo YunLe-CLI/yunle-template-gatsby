@@ -40,7 +40,7 @@ module.exports = {
   router: [
     {
       route: '/api/mock',
-      handle: (req, res, next) => {
+      handle: (req, res) => {
         const data = Mock.mock({
           data: {
             'list|0-10': [
@@ -55,7 +55,6 @@ module.exports = {
         });
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(data));
-        next();
       },
     },
   ],
