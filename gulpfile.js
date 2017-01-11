@@ -202,6 +202,18 @@ gulp.task('server', ['libs', 'less', 'css', 'images', 'script', 'html'], functio
 // 生产环境gulp任务
 gulp.task('build', ['build-libs', 'build-less', 'build-css', 'build-images', 'build-script', 'build-html'], function() {
   console.info('打包生产环境成功!');
+  const middleware = [];
+  proxys.map(function (item) {
+    middleware.push(proxyMiddleware(
+      [item.path],
+      { target: item.host, changeOrigin: true }));
+  });
+  browserSync.init({
+    notify: false,
+    server: 'dist',
+    open: 'external',
+    middleware: middleware.concat(router),
+  });
 });
 
 // 默认启动的gulp任务数组['server']
