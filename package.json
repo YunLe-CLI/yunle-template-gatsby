@@ -6,10 +6,21 @@
   "scripts": {
     "clean": "rimraf dist && mkdir dist",
     "clean_dev": "rimraf .tmp && mkdir .tmp",
-    "dev": "npm run clean_dev && gulp",
+    "dev": "npm run clean_dev && gulp --env development",
     "build": "npm run clean && gulp build --env production",
-    "build-images": "gulp build-images",
-    "test": "mocha  --recursive"
+    "html": "gulp html  --env development",
+    "build-html": "gulp html  --env production",
+    "less": "gulp less  --env development",
+    "build-less": "gulp less  --env production",
+    "css": "gulp css  --env development",
+    "build-css": "gulp css  --env production",
+    "images": "gulp images  --env development",
+    "build-images": "gulp images  --env production",
+    "script": "gulp script  --env development",
+    "build-script": "gulp script  --env production",
+    "libs": "gulp libs  --env development",
+    "build-libs": "gulp libs  --env production",
+    "test-scaffolding": "mocha  --recursive"
   },
   "repository": {
     "type": "git",
@@ -38,6 +49,7 @@
     "gulp-base64": "^0.1.3",
     "gulp-cache": "^0.4.5",
     "gulp-changed": "^1.3.2",
+    "gulp-html-replace": "^1.6.2",
     "gulp-htmlmin": "^3.0.0",
     "gulp-imagemin": "^3.1.1",
     "gulp-less": "^3.3.0",
@@ -47,12 +59,14 @@
     "gulp-postcss": "^6.2.0",
     "gulp-rev-append": "^0.1.7",
     "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.8",
     "http-proxy-middleware": "^0.17.3",
     "imagemin-pngquant": "^5.0.0",
     "mkdir": "0.0.2",
     "mocha": "^3.2.0",
     "mockjs": "^1.0.1-beta3",
     "node-mocks-http": "^1.5.5",
-    "rimraf": "^2.5.4"
+    "rimraf": "^2.5.4",
+    "run-sequence": "^1.2.2"
   }
 }

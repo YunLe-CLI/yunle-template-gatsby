@@ -6,19 +6,28 @@
 
 2. `yunle init gulp <project-name>`
 
-2. `cd <project-name> && npm install`
+3. `cd <project-name> && npm install`
 
-开发过程中，你用得最多的会是`npm run dev`，但是这里还有很多其它的处理：
+4. `npm run dev`
+
+## 开发流程
+
+![开发流程图](docs/images/images.png)
+
+## 相关命令
+
+> 开发过程中，你用得最多的会是`npm run dev`，但是这里还有很多其它的处理：
 
 
 |`npm run <script>`|用途|
 |------------------|-----------|
-|`dev`|开发环境服务。|
-|`build`|生产环境服务打包服务。|
-
-## 开发流程
-
-![开发流程图](doc/images/images.png)
+|`dev/build`|开发/生产环境 --- 启动服务。|
+|`html/build-html`|开发/生产环境 --- 编译html。|
+|`less/build-less`|开发/生产环境 --- 编译less。|
+|`css/build-css`|开发/生产环境 --- 编译css。|
+|`images/build-images`|开发/生产环境 --- 编译images。|
+|`script/build-script`|开发/生产环境 --- 编译script。|
+|`libs/build-libs`|开发/生产环境 --- 编译libs。|
 
 ## 程序目录
 
