@@ -32,7 +32,7 @@ window.onload = () => {
   };
   $rapBtn.onclick = () => {
     console.log('请求Rap数据');
-    get('/mockjsdata/481/tenant/service-package/1', (data) => {
+    get('/api/rap/481/user/expert/checkV2', (data) => {
       let text = '';
       try {
         text = JSON.stringify(data);

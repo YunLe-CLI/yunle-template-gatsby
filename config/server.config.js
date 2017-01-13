@@ -33,8 +33,9 @@ module.exports = {
   },
   proxys: [
     {
-      host: 'http://rap.taobao.org/',
-      path: '/mockjsdata',
+      host: 'http://rap.taobao.org',
+      path: '/api/rap',
+      pathRewrite: { '^/api/rap': 'mockjsdata' },
     },
   ],
   router: [
@@ -43,14 +44,25 @@ module.exports = {
       handle: (req, res) => {
         const data = Mock.mock({
           data: {
-            'list|0-10': [
-              {
-                'id|+1': 0,
-              },
-            ],
+            'status|0-1': 0,
+            conditions: {
+              workNum: 10,
+              followsNum: 10,
+              fansNum: 10,
+            },
+            nowStats: {
+              'workNum|0-20': 0,
+              'followsNum|0-20': 0,
+              'fansNum|0-20': 0,
+            },
+            userInfo: [{
+              avatar: "@image('200x200', '#50B347', '#FFF', '白猫')",
+              nickname: '@csentence(3, 10)',
+            }],
+            'isOk|0-1': 0,
           },
-          status: 200,
-          message: '',
+          'status|200-201': 200,
+          message: '@sentence(10, 25)',
           serverTime: '@now',
         });
         res.setHeader('Content-Type', 'application/json');

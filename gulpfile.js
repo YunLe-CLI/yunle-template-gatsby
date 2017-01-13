@@ -197,7 +197,7 @@ gulp.task('server', ['init'], function () {
   proxys.map(function (item) {
     middleware.push(proxyMiddleware(
       [item.path],
-      { target: item.host, changeOrigin: true }));
+      { target: item.host, changeOrigin: true, pathRewrite: item.pathRewrite }));
   });
   browserSync.init({
     notify: false,
@@ -225,7 +225,7 @@ gulp.task('build', ['init'], function() {
   proxys.map(function (item) {
     middleware.push(proxyMiddleware(
       [item.path],
-      { target: item.host, changeOrigin: true }));
+      { target: item.host, changeOrigin: true, pathRewrite: item.pathRewrite }));
   });
   browserSync.init({
     notify: false,
