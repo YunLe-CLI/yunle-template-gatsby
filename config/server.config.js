@@ -1,5 +1,3 @@
-const Mock = require('mockjs');
-
 module.exports = {
   port: 3000,
   PATHS: {
@@ -31,18 +29,21 @@ module.exports = {
       },
     },
   },
-  proxys: [
-    {
-      host: 'http://rap.taobao.org',
-      path: '/api/rap',
-      pathRewrite: { '^/api/rap': 'mockjsdata' },
-    },
-  ],
-  router: [
-    {
-      route: '/api/mock',
-      handle: (req, res) => {
-        const data = Mock.mock({
+  proxys: {
+    dev: [
+      {
+        host: 'http://rap.taobao.org',
+        path: '/api/rap',
+        pathRewrite: { '^/api/rap': 'mockjsdata' },
+      },
+    ],
+    pro: [],
+  },
+  router: {
+    dev: [
+      {
+        route: '/api/mock/checkV2',
+        mockData: {
           data: {
             'status|0-1': 0,
             conditions: {
@@ -64,10 +65,13 @@ module.exports = {
           'status|200-201': 200,
           message: '@sentence(10, 25)',
           serverTime: '@now',
-        });
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(data));
+        },
+        handle: (req, res, ctx) => {
+          // ctx只在正试环境中使用
+          // ctx.body = 123;
+        },
       },
-    },
-  ],
+    ],
+    pro: [],
+  },
 };

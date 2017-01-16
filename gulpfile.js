@@ -8,13 +8,15 @@ const cssnano = require('cssnano');
 const pngquant = require('imagemin-pngquant');
 const minimist = require('minimist');
 const runSequence = require('run-sequence');
+const Mock = require('mockjs');
+
 
 const config = require('./config/server.config');
 const PATHS = config.PATHS || {};
 const entry = PATHS.entry || {};
 const output = PATHS.output || {};
-const router = config.router || [];
-const proxys = config.proxys || [];
+const router = config.router.dev || [];
+const proxys = config.proxys.dev || [];
 
 const errFun = { errorHandler: $.notify.onError('Error: <%= error.message %>') };
 const imgBase64 = {
@@ -227,6 +229,21 @@ gulp.task('build', ['init'], function() {
       [item.path],
       { target: item.host, changeOrigin: true, pathRewrite: item.pathRewrite }));
   });
+  router.map(function (item) {
+    middleware.push({
+      route: item.route,
+      handle: function (req, res) {
+        if (item.mockData) {
+          const data = Mock.mock(item.mockData);
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(data));
+          return;
+        }
+        item.handle ? item.handle(req, res) : null;
+      },
+    });
+  });
+  const routerMiddleware =
   browserSync.init({
     notify: false,
     server: 'dist',
