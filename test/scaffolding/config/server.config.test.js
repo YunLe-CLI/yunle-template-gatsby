@@ -23,10 +23,23 @@ describe('app/config/server.config.js', function() {
     expect(serverConfig.proxys).to.be.not.empty;
   });
   it('should proxys an array', function() {
-    expect(serverConfig.proxys).to.be.an('array');
+    expect(serverConfig.proxys.dev).to.be.an('array');
+    expect(serverConfig.proxys.pro).to.be.an('array');
   });
-  context('proxys in array', function() {
-    var proxys = serverConfig.proxys;
+  context('proxys[dev] in array', function() {
+    var proxys = serverConfig.proxys.dev;
+    for (var i = 0; i < proxys.length ; i++) {
+      var proxy = proxys[i];
+      it('should proxy host an string ' + proxy.host, function() {
+        expect(proxy.host).to.be.a('string');
+      });
+      it('should proxy path an string ' + proxy.path, function() {
+        expect(proxy.path).to.be.a('string');
+      });
+    }
+  });
+  context('proxys[pro] in array', function() {
+    var proxys = serverConfig.proxys.pro;
     for (var i = 0; i < proxys.length ; i++) {
       var proxy = proxys[i];
       it('should proxy host an string ' + proxy.host, function() {
