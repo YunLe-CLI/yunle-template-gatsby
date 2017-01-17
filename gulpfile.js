@@ -11,12 +11,13 @@ const runSequence = require('run-sequence');
 const Mock = require('mockjs');
 
 
-const config = require('./config/server.config');
-const PATHS = config.PATHS || {};
+const serverConfig = require('./config/server.config');
+const gulpConfig = require('./config/gulp.config');
+const PATHS = gulpConfig.PATHS || {};
 const entry = PATHS.entry || {};
 const output = PATHS.output || {};
-const router = config.router.dev || [];
-const proxys = config.proxys.dev || [];
+const router = serverConfig.router.dev || [];
+const proxys = serverConfig.proxys.dev || [];
 
 const errFun = { errorHandler: $.notify.onError('Error: <%= error.message %>') };
 const imgBase64 = {
