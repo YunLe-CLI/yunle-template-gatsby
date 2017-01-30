@@ -1,6 +1,8 @@
 /* global window document XMLHttpRequest */
 
-console.log(window.__ENV__);
+const test = 123;
+
+console.log(window.__ENV__, test);
 
 // 测试
 function get(url, fn) {

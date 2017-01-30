@@ -12,7 +12,7 @@ const Mock = require('mockjs');
 
 
 const serverConfig = require('./config/server.config');
-const gulpConfig = require('./config/gulp.config');
+const gulpConfig = require('./config/_config');
 const PATHS = gulpConfig.PATHS || {};
 const entry = PATHS.entry || {};
 const output = PATHS.output || {};
