@@ -22,10 +22,7 @@
     "build-libs": "gulp libs  --env production",
     "test-scaffolding": "mocha  --recursive"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hexiao-o/yunle-template-gulp.git"
-  },
+  "repository": "git+https://github.com/hexiao-o/yunle-template-gulp.git",
   "author": "hexiao-o",
   "license": "ISC",
   "bugs": {
